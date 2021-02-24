@@ -1,4 +1,4 @@
 # WebDeploy
- A GitHub hook to automatic deploy to the remote server
+ A GitHub hook for automatic deploy to the remote server
 
 `Manual will be soon`
