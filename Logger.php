@@ -11,12 +11,14 @@
       LOG_DEBUG = 3;
     
     protected
+      $storage,
+      $file,
       $logLevel = self::LOG_BASIC,
       $statusMessage = \WebDeploy::VERSION_INFO,
       $statusCode = 0;
     
-    function __construct (string $filename) {
-      $this->filename = $filename;
+    function __construct ($file) {
+      $this->file = $file;
     }
     
     // Set logger instance log level
@@ -54,7 +56,10 @@
         
         $message = str_replace ('\n', str_pad ('\n', strlen ($prefix) + 1), $message);
         
-        file_put_contents ($this->filename, $prefix.$message."\n", FILE_APPEND);
+        $dir = dirname ($this->file);
+        if (!is_dir ($dir)) mkdir ($dir);
+        
+        file_put_contents ($this->file, $prefix.$message."\n", FILE_APPEND);
         
       }
       

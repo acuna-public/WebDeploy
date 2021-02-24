@@ -56,7 +56,7 @@
         if ($i > 0) $dir .= '/';
         
         $dir .= $part;
-        if (!is_dir ($dir)) mkdir ($dir, $chmod);
+        if (!@is_dir ($dir)) @mkdir ($dir, $chmod);
         
       }
       
