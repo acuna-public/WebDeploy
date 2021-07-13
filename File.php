@@ -30,10 +30,14 @@
       
     }
     
-    function write ($content, $append = false) {
+    function write ($content, $append = false, $chmod = 0777) {
       
       $this->open ($append ? self::WRITE : self::REWRITE);
-      return fwrite ($this->fp, $content);
+      
+      $status = fwrite ($this->fp, $content);
+      chmod ($this->file, $chmod);
+      
+      return $status;
       
     }
     
