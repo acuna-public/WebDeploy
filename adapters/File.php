@@ -1,8 +1,8 @@
 <?php
   
-  namespace Storage\Adapter;
+  namespace Storage;
   
-  class File extends \Storage\Adapter {
+  class File extends Adapter {
     
     protected function getFile ($file): \File {
       return new \File ($this->config['path'].'/'.$file);

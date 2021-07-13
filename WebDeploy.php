@@ -8,25 +8,26 @@
    */
   
   require_once 'AssocArray.php';
-  require_once 'Logger.php';
   require_once 'WebDeploy.php';
   require_once 'ConfigRule.php';
   require_once 'Deployment.php';
   
   abstract class WebDeploy extends AssocArray {
     
-    const VERSION_INFO = 'WebDeploy v1.0', NL = '<br/>';
+    const VERSION_INFO = 'WebDeploy v1.0';
     
-    protected $config, $matched = [], $filters = [], $git;
-    public $debug = 0, $storage, $logger;
+    protected $matched = [], $filters = [], $git;
+    public $debug = 0, $config, $storage, $logger;
     
-    function __construct (array $config, Storage\Adapter $storage, string $log) {
+    function __construct (array $config, Storage\Adapter $storage, WebDeploy\Logger $logger) {
       
       parent::__construct ();
       
       $this->config = $config;
       $this->storage = $storage;
-      $this->logger = new WebDeploy\Logger ($log);
+      $this->logger = $logger;
+      
+      $this->logger->statusMessage .= self::VERSION_INFO;
       
     }
     
@@ -48,7 +49,7 @@
             
             $this->storage->config['path'] = $rule->get ('destination');
             
-            $deploy = new \WebDeploy\Deployment ($this, $rule);
+            $deploy = new WebDeploy\Deployment ($this, $rule);
             
             if ($deploy->deploy ())
               $this->results[] = $deploy->result;
@@ -90,18 +91,24 @@
     
     final function deploy () {
       
-      if ($this->isDeploy ()) {
+      try {
         
-        if ($this->config) {
+        if ($this->isDeploy ()) {
           
-          $this->onParse ();
-          $this->addRule ($this->get ('repository'));
+          if ($this->config) {
+            
+            $this->onParse ();
+            $this->addRule ($this->get ('repository'));
+            
+          } else $this->logger->error ('Config is empty', 500);
           
-        } else $this->logger->error ('Config is empty', 500);
+        }
         
+        $this->logger->sendStatus ();
+        
+      } catch (\GitException $e) {
+        $this->logger->error ($e->getMessage (), $e->getCode ());
       }
-      
-      $this->logger->sendStatus ();
       
     }
     

@@ -15,7 +15,7 @@
       
       $this->set ('repository', $data['repository']['name']);
       
-      $this->git = new \Git\Adapter\GitHub ($this->getConfig ());
+      $this->git = new \Git\GitHub ($this->getConfig ());
       
       $this->commit = $this->git->getCommit ($this->get ('repository'), $data['head_commit']['id']);
       

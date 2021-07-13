@@ -26,13 +26,14 @@
         'ignore' => [],
         'log-level' => 'basic',
         'repositories' => [],
+        'mode' => 'update',
         
       ];
       
     }
     
     protected function getRequiredPairs (): array {
-      return ['repository', 'destination', 'mode'];
+      return ['destination', 'mode'];
     }
     
     protected function getRequiredValues (): array {

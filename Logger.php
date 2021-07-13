@@ -10,18 +10,19 @@
       LOG_VERBOSE = 2,
       LOG_DEBUG = 3;
     
+    const NL = '<br/>';
+    
+    public
+      $statusMessage = '';
+    
     protected
-      $storage,
       $file,
-      $logLevel = self::LOG_BASIC,
-      $statusMessage = \WebDeploy::VERSION_INFO,
+      $level = self::LOG_DEBUG,
       $statusCode = 0;
     
-    function __construct ($file) {
+    function __construct (string $file) {
       $this->file = $file;
     }
-    
-    // Set logger instance log level
     
     function setLogLevel ($level = self::LOG_BASIC) {
       
@@ -47,10 +48,9 @@
       
     }
     
-    // Log to file
     function message ($message, $level = self::LOG_BASIC) {
       
-      if ($level <= $this->logLevel and $this->logLevel > self::LOG_NONE) {
+      if ($this->level > self::LOG_NONE and $level <= $this->level) {
         
         $prefix = date ('c').'  ';
         
@@ -65,27 +65,21 @@
       
     }
     
-    // Set error code and message
-    
     function error ($message, $code) {
       
-      $this->message ('Error: '.$message);
+      $this->message ('Error: '.$message.$code > 0 ? ' ('.$code.')' : '');
       $this->setStatus ($message, $code);
       
     }
-    
-    // Store status code and message, to be output in HTML
     
     function setStatus ($message, $code = 200) {
       
       if ($code > $this->statusCode)
         $this->statusCode = $code;
       
-      $this->statusMessage .= \WebDeploy::NL.$message;
+      $this->statusMessage .= self::NL.$message;
       
     }
-    
-    // Output status code and message
     
     function sendStatus () {
       
