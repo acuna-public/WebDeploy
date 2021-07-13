@@ -159,7 +159,7 @@
     protected function writeFile ($file, $data) {
       
       $this->deploy->storage->makeDir ($this->deploy->storage->getDir ($file));
-      return $this->deploy->storage->write ($file, $data);
+      $this->deploy->storage->write ($file, $data);
       
     }
     

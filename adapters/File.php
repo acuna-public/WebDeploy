@@ -14,7 +14,7 @@
     
     function write ($file, $content, $append = false) {
       
-      if (!$this->getFile ($file)->write ($content, $append))
+      if ($this->getFile ($file)->write ($content, $append) === false)
         throw new \StorageException ($this, 'Can\'t write to file', $file);
       
     }
