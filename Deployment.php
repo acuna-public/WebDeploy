@@ -96,7 +96,8 @@
           
           if (!$dryRun) {
             
-            try {$this->deploy->logger->message ($this->deploy->git->readFile ($this->deploy->get ('repository'), $file->get ('name')));
+            try {
+              $this->deploy->logger->message ($this->deploy->git->readFile ($this->deploy->get ('repository'), $file->get ('name')));
               $this->writeFile ($file->get ('name'), $this->deploy->git->readFile ($this->deploy->get ('repository'), $file->get ('name')));
             } catch (\StorageException $e) {
               
