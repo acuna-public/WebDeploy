@@ -25,7 +25,6 @@
         'pre-releases' => false,
         'ignore' => [],
         'log-level' => 'basic',
-        'repositories' => [],
         'mode' => 'update',
         
       ];

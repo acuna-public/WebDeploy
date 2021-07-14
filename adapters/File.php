@@ -2,7 +2,7 @@
   
   namespace Storage;
   
-  class File extends Adapter {
+  class File extends \Storage {
     
     protected function getFile ($file): \File {
       return new \File ($this->config['path'].'/'.$file);
@@ -12,11 +12,15 @@
       return $this->getFile ($file)->read ();
     }
     
-    function write ($file, $content, $append = false) {
+    function write ($file, $content, $append = false, $chmod = 0644) {
       
-      if ($this->getFile ($file)->write ($content, $append) === false)
+      if ($this->getFile ($file)->write ($content, $append, $chmod) === false)
         throw new \StorageException ($this, 'Can\'t write to file', $file);
       
+    }
+    
+    function chmod ($file, $chmod): bool {
+      return $this->getFile ($file)->chmod ($chmod);
     }
     
     function makeDir ($dir = '', $chmod = 0777) {

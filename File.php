@@ -30,15 +30,15 @@
       
     }
     
-    function write ($content, $append = false, $chmod = 0777) {
+    function write ($content, $append = false, $chmod = 0644) {
       
       $this->open ($append ? self::WRITE : self::REWRITE);
+      return fwrite ($this->fp, $content);
       
-      $status = fwrite ($this->fp, $content);
-      chmod ($this->file, $chmod);
-      
-      return $status;
-      
+    }
+    
+    function chmod ($chmod): bool {
+      return chmod ($this->file, $chmod);
     }
     
     function char ($offset): string {

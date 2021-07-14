@@ -95,15 +95,15 @@
       
       $dryRun = ($this->rule->get ('mode') == 'dry-run');
       
-      //$this->deploy->logger->message ('Modified files: '.implode (', ', $this->files['modified']), Logger::LOG_DEBUG);
-      //$this->deploy->logger->message ('Removed files: '.implode (', ', $this->files['removed']), Logger::LOG_DEBUG);
-      //$this->deploy->logger->message ('Repository files: '.implode (', ', $archive->listFiles ()), Logger::LOG_DEBUG);
+      //$this->deploy->logger->message ('Modified files: '.implode (', ', $this->files['modified']), \Logger::LOG_DEBUG);
+      //$this->deploy->logger->message ('Removed files: '.implode (', ', $this->files['removed']), \Logger::LOG_DEBUG);
+      //$this->deploy->logger->message ('Repository files: '.implode (', ', $archive->listFiles ()), \Logger::LOG_DEBUG);
       
       foreach ($this->deploy->get ('files') as $file) {
         
         if ($this->isIgnored ($file->get ('name'))) {
           
-          $this->deploy->logger->message ('Skipping ignored file '.$file->get ('name'), Logger::LOG_VERBOSE);
+          $this->deploy->logger->message ('Skipping ignored file '.$file->get ('name'), \Logger::LOG_VERBOSE);
           continue;
           
         }
@@ -113,7 +113,7 @@
           !$this->deploy->storage->exists ($file->get ('name')) // Не существует на сервере
         ) {
           
-          $this->deploy->logger->message ('Writing file '.$file->get ('name'), Logger::LOG_VERBOSE);
+          $this->deploy->logger->message ('Writing file '.$file->get ('name'), \Logger::LOG_VERBOSE);
           
           if (!$dryRun) {
             
@@ -121,7 +121,7 @@
               $this->writeFile ($file->get ('name'), $this->deploy->readFile ($file->get ('name')));
             } catch (\StorageException $e) {
               
-              $this->deploy->logger->message ('Error writing to file '.$e->getFile (), Logger::LOG_BASIC);
+              $this->deploy->logger->message ('Error writing to file '.$e->getFile (), \Logger::LOG_BASIC);
               $this->errors++;
               
             }
@@ -130,7 +130,7 @@
           
         } elseif ($file->get ('status') == 'removed' and $this->deploy->storage->exists ($file->get ('name'))) {
           
-          $this->deploy->logger->message ('Removing file '.$file->get ('name'), Logger::LOG_VERBOSE);
+          $this->deploy->logger->message ('Removing file '.$file->get ('name'), \Logger::LOG_VERBOSE);
           
           if (!$dryRun) {
             
@@ -141,7 +141,7 @@
               
             } catch (\StorageException $e) {
               
-              $this->deploy->logger->message ('Error while removing file '.$e->getFile (), Logger::LOG_BASIC);
+              $this->deploy->logger->message ('Error while removing file '.$e->getFile (), \Logger::LOG_BASIC);
               $this->errors++;
               
             }
@@ -160,11 +160,12 @@
       
       $this->deploy->storage->makeDir ($this->deploy->storage->getDir ($file));
       $this->deploy->storage->write ($file, $data);
+      $this->deploy->storage->chmod ($file, 0777);
       
     }
     
     protected function removeFile ($file) {
-      return ($this->deploy->storage->isFile ($file) && $this->deploy->storage->delete ($file));
+      return $this->deploy->storage->delete ($file);
     }
     
     protected function cleanDirs ($path) {

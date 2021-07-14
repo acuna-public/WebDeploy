@@ -1,7 +1,5 @@
 <?php
   
-  namespace WebDeploy;
-  
   class Logger {
     
     const
@@ -13,11 +11,11 @@
     const NL = '<br/>';
     
     public
-      $statusMessage = '';
+      $message = '';
     
     protected
       $file,
-      $level = self::LOG_DEBUG,
+      $level = self::LOG_BASIC,
       $statusCode = 0;
     
     function __construct (string $file) {
@@ -59,6 +57,8 @@
         $dir = dirname ($this->file);
         if (!is_dir ($dir)) mkdir ($dir);
         
+        $this->message .= self::NL.$message;
+        
         file_put_contents ($this->file, $prefix.$message."\n", FILE_APPEND);
         
       }
@@ -77,14 +77,14 @@
       if ($code > $this->statusCode)
         $this->statusCode = $code;
       
-      $this->statusMessage .= self::NL.$message;
+      $this->message .= self::NL.$message;
       
     }
     
     function sendStatus () {
       
       http_response_code ($this->statusCode);
-      echo $this->statusMessage;
+      echo $this->message;
       
     }
     

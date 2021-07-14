@@ -17,17 +17,20 @@
     const VERSION_INFO = 'WebDeploy v1.0';
     
     protected $matched = [], $filters = [], $git;
-    public $debug = 0, $config, $storage, $logger;
+    public $debug = 0;
     
-    function __construct (array $config, Storage\Adapter $storage, WebDeploy\Logger $logger) {
+    public $token, $config, $storage, $logger;
+    
+    function __construct (string $token, array $config, Storage $storage, Logger $logger) {
       
       parent::__construct ();
       
+      $this->token = $token;
       $this->config = $config;
       $this->storage = $storage;
       $this->logger = $logger;
       
-      $this->logger->statusMessage .= self::VERSION_INFO;
+      $this->logger->message .= self::VERSION_INFO;
       
     }
     
@@ -35,7 +38,7 @@
       return ['repository', 'files'];
     }
     
-    protected function addRule (string $name) {
+    protected function addRule () {
       
       try {
         
@@ -45,8 +48,6 @@
           
           if ($rule->compare ()) {
             
-            $rule->set ('name', $name);
-            
             $this->storage->config['path'] = $rule->get ('destination');
             
             $deploy = new WebDeploy\Deployment ($this, $rule);
@@ -55,9 +56,6 @@
               $this->results[] = $deploy->result;
             
             $this->logger->setLogLevel ();
-            
-            foreach ($rule->get ('repositories') as $repo)
-              $this->addRule ($repo);
             
           }
           
@@ -98,7 +96,7 @@
           if ($this->config) {
             
             $this->onParse ();
-            $this->addRule ($this->get ('repository'));
+            $this->addRule ();
             
           } else $this->logger->error ('Config is empty', 500);
           

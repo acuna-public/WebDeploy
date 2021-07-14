@@ -1,10 +1,8 @@
 <?php
   
-  namespace Storage;
-  
   require 'StorageException.php';
   
-  abstract class Adapter {
+  abstract class Storage {
     
     public $config = [];
     
@@ -24,6 +22,10 @@
     
     function getDir ($dir): string {
       return $dir;
+    }
+    
+    function chmod ($file, $chmod): bool {
+      return false;
     }
     
   }
