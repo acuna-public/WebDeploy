@@ -118,7 +118,7 @@
           if (!$dryRun) {
             
             try {
-              $this->writeFile ($file->get ('name'), $this->deploy->readFile ($file->get ('name')));
+              $this->writeFile ($file->get ('name'), $this->deploy->git->readFile ($this->deploy->get ('repository'), $file->get ('name')));
             } catch (\StorageException $e) {
               
               $this->deploy->logger->message ('Error writing to file '.$e->getFile (), \Logger::LOG_BASIC);

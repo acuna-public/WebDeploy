@@ -16,8 +16,8 @@
     
     const VERSION_INFO = 'WebDeploy v1.0';
     
-    protected $matched = [], $filters = [], $git;
-    public $debug = 0;
+    protected $matched = [], $filters = [];
+    public $debug = 0, $git;
     
     public $token, $config, $storage, $logger;
     
@@ -82,10 +82,6 @@
     
     abstract protected function onParse ();
     abstract protected function isDeploy (): bool;
-    
-    function readFile ($file): string {
-      return $this->git->readFile ($this->get ('repository'), $file);
-    }
     
     final function deploy () {
       
