@@ -72,14 +72,14 @@
       if ($this->deploy->get ('forced')) {
         
         $mode = 'replace';
-        $this->deploy->logger->message ('Forced update - deploying all files');
+        $this->deploy->logger->message ('Forced update - deploying all files', \Logger::LOG_VERBOSE);
         
       } elseif (in_array ($this->rule->get ('mode'), ['deploy', 'dry-run'])) {
         
         if (!$this->countFiles ($this->rule->get ('destination'), false)) {
           
           $mode = 'replace';
-          $this->deploy->logger->message ('Destination is empty - deploying all files');
+          $this->deploy->logger->message ('Destination is empty - deploying all files', \Logger::LOG_VERBOSE);
           
         } else $mode = 'update';
         
@@ -95,8 +95,8 @@
       
       $dryRun = ($this->rule->get ('mode') == 'dry-run');
       
-      //$this->deploy->logger->message ('Modified files: '.implode (', ', $this->files['modified']), \Logger::LOG_DEBUG);
-      //$this->deploy->logger->message ('Removed files: '.implode (', ', $this->files['removed']), \Logger::LOG_DEBUG);
+      $this->deploy->logger->message ('Modified files: '.implode (', ', $this->files['modified']), \Logger::LOG_DEBUG);
+      $this->deploy->logger->message ('Removed files: '.implode (', ', $this->files['removed']), \Logger::LOG_DEBUG);
       //$this->deploy->logger->message ('Repository files: '.implode (', ', $archive->listFiles ()), \Logger::LOG_DEBUG);
       
       foreach ($this->deploy->get ('files') as $file) {
@@ -113,7 +113,7 @@
           !$this->deploy->storage->exists ($file->get ('name')) // Не существует на сервере
         ) {
           
-          $this->deploy->logger->message ('Writing file '.$file->get ('name'), \Logger::LOG_VERBOSE);
+          $this->deploy->logger->message ('Writing file '.$file->get ('name'));
           
           if (!$dryRun) {
             
@@ -121,7 +121,7 @@
               $this->writeFile ($file->get ('name'), $this->deploy->git->readFile ($this->deploy->get ('repository'), $file->get ('name')));
             } catch (\StorageException $e) {
               
-              $this->deploy->logger->message ('Error writing to file '.$e->getFile (), \Logger::LOG_BASIC);
+              $this->deploy->logger->message ('Error writing to file '.$e->getFile ());
               $this->errors++;
               
             }
@@ -130,7 +130,7 @@
           
         } elseif ($file->get ('status') == 'removed' and $this->deploy->storage->exists ($file->get ('name'))) {
           
-          $this->deploy->logger->message ('Removing file '.$file->get ('name'), \Logger::LOG_VERBOSE);
+          $this->deploy->logger->message ('Removing file '.$file->get ('name'));
           
           if (!$dryRun) {
             
@@ -141,7 +141,7 @@
               
             } catch (\StorageException $e) {
               
-              $this->deploy->logger->message ('Error while removing file '.$e->getFile (), \Logger::LOG_BASIC);
+              $this->deploy->logger->message ('Error while removing file '.$e->getFile ());
               $this->errors++;
               
             }
