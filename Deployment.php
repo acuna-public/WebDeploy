@@ -23,15 +23,10 @@
         $this->deploy->logger->message ('Deploying '.$commit.' ('.$this->deploy->get ('branch').') from '.$this->deploy->get ('repository'));
       
       try {
-        
         $this->deploy->storage->makeDir ();
-        return true;
-        
       } catch (\StorageException $e) {
-        $this->deploy->logger->error ('Error creating destination directory', 500);
+        $this->deploy->logger->error ('Error creating destination directory '.$e->getFile (), 500);
       }
-      
-      return false;
       
     }
     
@@ -39,16 +34,13 @@
       
       $this->deploy->logger->message ('Starting to deploy \''.$this->deploy->get ('repository').'\' repository...');
       
-      if ($this->setup ()) {
-        
-        $this->deployFiles ();
-        
-        if ($this->errors)
-          $this->deploy->logger->message ('Repository \''.$this->deploy->get ('repository').'\' deployed in \''.$this->rule->get ('mode').'\' mode with '.$this->errors.' error'.($this->errors > 1 ? 's' : ''));
-        else
-          $this->deploy->logger->message ('Repository \''.$this->deploy->get ('repository').'\' deployed successfully in \''.$this->rule->get ('mode').'\' mode');
-        
-      }
+      $this->setup ();
+      $this->deployFiles ();
+      
+      if ($this->errors)
+        $this->deploy->logger->message ('Repository \''.$this->deploy->get ('repository').'\' deployed in \''.$this->rule->get ('mode').'\' mode with '.$this->errors.' error'.($this->errors > 1 ? 's' : ''));
+      else
+        $this->deploy->logger->message ('Repository \''.$this->deploy->get ('repository').'\' deployed successfully in \''.$this->rule->get ('mode').'\' mode');
       
     }
     
@@ -145,7 +137,7 @@
       $this->deploy->logger->message ('111');
       $this->deploy->storage->makeDir ($this->deploy->storage->getDir ($file));
       $this->deploy->logger->message ($this->deploy->storage->getDir ($file));
-      $this->deploy->storage->write ($file, $data);$this->deploy->logger->message ('111');
+      $this->deploy->storage->write ($file, $data);
       $this->deploy->storage->chmod ($file, 0777);
       
     }

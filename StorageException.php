@@ -2,13 +2,13 @@
   
   class StorageException extends Exception {
     
-    protected $adapter;
+    protected $storage;
     
-    function __construct (\Storage\Adapter $adapter, $mess, $file = '') {
+    function __construct (Storage $storage, $mess, $file = '') {
       
       parent::__construct ($mess);
       
-      $this->adapter = $adapter;
+      $this->storage = $storage;
       $this->file = $file;
       
     }
