@@ -1,7 +1,5 @@
 <?php
   
-  // Class to perform all file changes
-  
   namespace WebDeploy;
   
   class Deployment {
@@ -97,7 +95,6 @@
           if (!$dryRun) {
             
             try {
-              $this->deploy->logger->message ($this->deploy->git->readFile ($this->deploy->get ('repository'), $file->get ('name')));
               $this->writeFile ($file->get ('name'), $this->deploy->git->readFile ($this->deploy->get ('repository'), $file->get ('name')));
             } catch (\StorageException $e) {
               
@@ -159,6 +156,7 @@
     }
     
     // Check to see if a file should be ignored
+    
     protected function isIgnored ($filename) {
       
       // Match by glob pattern
@@ -184,6 +182,7 @@
     }
 
     // Count the number of files in a directory, including ignored if required
+    
     protected function countFiles ($path, $all = true) {
       
       $count = 0;
