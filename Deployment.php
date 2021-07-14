@@ -134,9 +134,9 @@
     }
     
     protected function writeFile ($file, $data) {
-      $this->deploy->logger->message ('111');
+      
       $this->deploy->storage->makeDir ($this->deploy->storage->getDir ($file));
-      $this->deploy->logger->message ($this->deploy->storage->getDir ($file));
+      
       $this->deploy->storage->write ($file, $data);
       $this->deploy->storage->chmod ($file, 0777);
       
