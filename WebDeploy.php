@@ -30,7 +30,7 @@
       $this->storage = $storage;
       $this->logger = $logger;
       
-      $this->logger->message .= self::VERSION_INFO;
+      $this->logger->message .= self::VERSION_INFO.'<br/>';
       
     }
     
@@ -52,14 +52,13 @@
             
             $deploy = new WebDeploy\Deployment ($this, $rule);
             
-            if ($deploy->deploy ())
-              $this->results[] = $deploy->result;
+            $deploy->process ();
             
             $this->logger->setLogLevel ();
             
           }
           
-        } else $this->logger->error ('Rules for repository "'.$this->get ('repository').'" not found in the deployment config', 500);
+        } else $this->logger->error ('Rules for repository \''.$this->get ('repository').'\' not found in deployment config', 500);
         
       } catch (\Exception $e) {
         $this->logger->error ($e->getMessage (), $e->getCode ());
@@ -69,15 +68,6 @@
     
     final function getConfig (): array {
       return $this->config[$this->get ('repository')];
-    }
-    
-    protected function logStatus ($success = true) {
-      
-      if ($success)
-        $this->logger->setStatus ($message);
-      else
-        $this->logger->setStatus ($message, 500);
-        
     }
     
     abstract protected function onParse ();

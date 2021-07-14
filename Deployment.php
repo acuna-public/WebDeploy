@@ -6,8 +6,6 @@
   
   class Deployment {
     
-    public $result;
-    
     protected $files = ['modified' => [], 'removed' => []], $errors = 0;
     
     function __construct (\WebDeploy $deploy, ConfigRule $rule) {
@@ -22,7 +20,7 @@
       $this->deploy->logger->setLogLevel ($this->rule->get ('log-level'));
       
       if ($commit = substr ($this->deploy->get ('commit-id'), 0, 6))
-        $this->deploy->logger->message ('Deploying '.$commit.' ('.$this->deploy->get ('branch').') from '.$this->deploy->get ('repository')."\r\n".'Destination: '.$this->rule->get ('destination'));
+        $this->deploy->logger->message ('Deploying '.$commit.' ('.$this->deploy->get ('branch').') from '.$this->deploy->get ('repository'));
       
       try {
         
@@ -37,31 +35,20 @@
       
     }
     
-    function deploy (): bool {
+    function process () {
+      
+      $this->deploy->logger->message ('Starting to deploy \''.$this->deploy->get ('repository').'\' repository...');
       
       if ($this->setup ()) {
         
-        if (!$this->deployFiles ())
-          $this->result = 'failure';
+        $this->deployFiles ();
         
-        if (!$this->errors) {
-          
-          $this->result = 'success';
-          $this->deploy->logger->message ('Repository deployed successfully in "'.$this->rule->get ('mode').'" mode');
-          
-          return true;
-          
-        } else {
-          
-          $this->result = $this->errors.' error'.($this->errors > 1 ? 's' : '');
-          
-          $this->deploy->logger->message ('Repository deployed in "'.$this->rule->get ('mode').'" mode with '.$this->result);
-          
-        }
+        if ($this->errors)
+          $this->deploy->logger->message ('Repository \''.$this->deploy->get ('repository').'\' deployed in \''.$this->rule->get ('mode').'\' mode with '.$this->errors.' error'.($this->errors > 1 ? 's' : ''));
+        else
+          $this->deploy->logger->message ('Repository \''.$this->deploy->get ('repository').'\' deployed successfully in \''.$this->rule->get ('mode').'\' mode');
         
       }
-      
-      return false;
       
     }
     
