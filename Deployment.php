@@ -119,7 +119,7 @@
               //$this->cleanDirs (dirname ($this->deploy->storagename));
               
             } catch (\StorageException $e) {
-              
+              //
               $this->deploy->logger->message ('Error while removing file '.$e->getFile ());
               $this->errors++;
               
