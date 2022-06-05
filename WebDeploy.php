@@ -14,7 +14,7 @@
 	
 	abstract class WebDeploy extends AssocArray {
 		
-		const VERSION = '1.0';
+		const VERSION = '1.1';
 		
 		protected $matched = [], $filters = [];
 		public $debug = 0, $git;
