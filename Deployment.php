@@ -4,7 +4,7 @@
 	
 	class Deployment {
 		
-		protected $files = ['modified' => [], 'removed' => []], $errors = 0;
+		protected $files = ['modified' => [], 'removed' => []];
 		
 		function __construct (\WebDeploy $deploy, ConfigRule $rule) {
 			
@@ -35,10 +35,7 @@
 			$this->setup ();
 			$this->deployFiles ();
 			
-			if ($this->errors)
-				$this->deploy->logger->message ('Repository \''.$this->deploy->get ('repository').'\' deployed in \''.$this->rule->get ('mode').'\' mode with '.$this->errors.' error'.($this->errors > 1 ? 's' : ''));
-			else
-				$this->deploy->logger->message ('Repository \''.$this->deploy->get ('repository').'\' deployed successfully in \''.$this->rule->get ('mode').'\' mode');
+			$this->deploy->logger->message ('Repository \''.$this->deploy->get ('repository').'\' deployed in \''.$this->rule->get ('mode').'\' mode');
 			
 		}
 		
@@ -77,7 +74,7 @@
 			//$this->deploy->logger->message ('Repository files: '.implode (', ', $archive->listFiles ()), \Logger::LOG_DEBUG);
 			
 			foreach ($this->deploy->get ('files') as $file) {
-				
+				echo ($file);
 				if ($this->isIgnored ($file->get ('name'))) {
 					
 					$this->deploy->logger->message ('Skipping ignored file '.$file->get ('name'), \Logger::LOG_VERBOSE);
@@ -86,8 +83,8 @@
 				}
 				
 				if (
-					($file->get ('status') == 'modified' and $this->getMode () != 'replace') or // Изменен локально
-					!$this->deploy->storage->exists ($file->get ('name')) // Не существует на сервере
+					($file->get ('status') == 'modified' and $this->getMode () != 'replace') // Изменен локально
+					or !$this->deploy->storage->exists ($file->get ('name')) // Не существует на сервере
 				) {
 					
 					$this->deploy->logger->message ('Writing file '.$file->get ('name'));
@@ -97,10 +94,7 @@
 						try {
 							$this->writeFile ($file->get ('name'), $this->deploy->git->readFile ($this->deploy->get ('repository'), $file->get ('name')));
 						} catch (\StorageException $e) {
-							
-							$this->deploy->logger->message ('Error writing to file '.$e->getFile ());
-							$this->errors++;
-							
+							$this->deploy->logger->error ('Error writing to file '.$e->getFile ());
 						}
 						
 					}
@@ -117,10 +111,7 @@
 							//$this->cleanDirs (dirname ($this->deploy->storagename));
 							
 						} catch (\StorageException $e) {
-							
-							$this->deploy->logger->message ('Error while removing file '.$e->getFile ());
-							$this->errors++;
-							
+							$this->deploy->logger->error ('Error while removing file '.$e->getFile ());
 						}
 						
 					}

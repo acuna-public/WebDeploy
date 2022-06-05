@@ -4,7 +4,7 @@
 	 * https://github.com/acuna-public/WebDeploy
 	 * @author Acuna
 	 * @license GPLv3
-	 * @version 1.0
+	 * @version 1.1
 	 */
 	
 	require_once 'AssocArray.php';

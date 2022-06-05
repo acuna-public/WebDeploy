@@ -8,8 +8,6 @@
 			LOG_VERBOSE = 2,
 			LOG_DEBUG = 3;
 		
-		//const NL = '<br/>';
-		
 		protected
 			$message = [];
 		
