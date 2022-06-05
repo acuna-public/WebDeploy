@@ -35,7 +35,8 @@
 			$this->setup ();
 			$this->deployFiles ();
 			
-			$this->deploy->logger->message ('Repository \''.$this->deploy->get ('repository').'\' deployed in \''.$this->rule->get ('mode').'\' mode');
+			if (!$this->deploy->logger->message['error'])
+				$this->deploy->logger->message ('Repository \''.$this->deploy->get ('repository').'\' deployed in \''.$this->rule->get ('mode').'\' mode');
 			
 		}
 		

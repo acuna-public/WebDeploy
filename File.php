@@ -26,14 +26,14 @@
 		function read (): string {
 			
 			$this->open (self::READ);
-			return fread ($this->fp, $this->size);
+			return @fread ($this->fp, $this->size);
 			
 		}
 		
 		function write ($content, $append = false) {
 			
 			$this->open ($append ? self::WRITE : self::REWRITE);
-			return fwrite ($this->fp, $content);
+			return @fwrite ($this->fp, $content);
 			
 		}
 		

@@ -8,8 +8,8 @@
 			LOG_VERBOSE = 2,
 			LOG_DEBUG = 3;
 		
-		protected
-			$message = [];
+		public
+			$message = ['name' => '', 'version' => '', 'mess' => [], 'error' => []];
 		
 		protected
 			$file,
@@ -51,7 +51,7 @@
 			
 		}
 		
-		function message ($message, $level = self::LOG_BASIC) {
+		protected function write ($message, $level = self::LOG_BASIC) {
 			
 			if ($this->level > self::LOG_NONE and $level <= $this->level) {
 				
@@ -62,28 +62,28 @@
 				$dir = dirname ($this->file);
 				if (!is_dir ($dir)) mkdir ($dir);
 				
-				$this->message['mess'][] = $message;
-				
 				file_put_contents ($this->file, $prefix.$message."\n", FILE_APPEND);
 				
 			}
 			
 		}
 		
-		function error ($message, $code = 500) {
+		function message ($message, $level = self::LOG_BASIC) {
 			
-			$this->message['error'][] = ['text' => $message, 'code' => $code];
-			
-			$this->message ($message);
-			
-			$this->setStatus ($message, $code);
+			if ($this->level > self::LOG_NONE and $level <= $this->level) {
+				
+				$this->write ($message, $level);
+				$this->message['mess'][] = $message;
+				
+			}
 			
 		}
 		
-		function setStatus ($message, $code = 200) {
+		function error ($message, $code = 403) {
 			
-			if ($code > $this->statusCode)
-				$this->statusCode = $code;
+			$this->message['error'][] = ['text' => $message, 'code' => $code];
+			
+			$this->write ($message);
 			
 		}
 		
