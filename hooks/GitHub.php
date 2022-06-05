@@ -10,10 +10,10 @@
 			
 			if ($this->debug)
 				$payload = file_get_contents (__DIR__.'/github.json');
-			elseif ($this->git->contentType == 'application/json')
-				$payload = file_get_contents ('php://input');
-			else
+			elseif ($_POST)
 				$payload = $_POST['payload'];
+			else
+				$payload = file_get_contents ('php://input');
 			
 			$data = json_decode ($payload, true);
 			
