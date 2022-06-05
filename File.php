@@ -19,7 +19,7 @@
 		private function open ($mode) {
 			
 			if (!$this->fp)
-				$this->fp = fopen ($this->file, $mode);
+				$this->fp = @fopen ($this->file, $mode);
 			
 		}
 		
