@@ -70,9 +70,12 @@
 			
 		}
 		
-		function error ($message, $code) {
+		function error ($message, $code = 500) {
 			
 			$this->message['error'][] = ['text' => $message, 'code' => $code];
+			
+			$this->message ($message);
+			
 			$this->setStatus ($message, $code);
 			
 		}
