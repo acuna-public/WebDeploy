@@ -9,12 +9,12 @@
 			LOG_DEBUG = 3;
 		
 		public
-			$message = ['name' => '', 'version' => '', 'mess' => [], 'error' => []];
+			$message = ['name' => '', 'version' => '', 'mess' => [], 'error' => []],
+			$statusCode = 0;
 		
 		protected
 			$file,
-			$level = self::LOG_BASIC,
-			$statusCode = 0;
+			$level = self::LOG_BASIC;
 		
 		function __construct (string $file) {
 			$this->file = $file;

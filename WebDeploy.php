@@ -88,7 +88,7 @@
 					
 				}
 				
-				$this->logger->sendStatus = ($this->logger->message['error'] ? 403 : 200);
+				$this->logger->statusCode = ($this->logger->message['error'] ? 403 : 200);
 				
 				$this->logger->sendStatus ();
 				
