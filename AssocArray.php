@@ -16,18 +16,18 @@
 			
 			foreach ($data as $key => $value)
 				$this->set ($key, $value);
-		
+			
 		}
 		
-		protected function getPairs (): array {
+		function getPairs (): array {
 			return [];
 		}
 		
-		protected function getRequiredPairs (): array {
+		function getRequiredPairs (): array {
 			return [];
 		}
 		
-		protected function getRequiredValues (): array {
+		function getRequiredValues (): array {
 			return [];
 		}
 		

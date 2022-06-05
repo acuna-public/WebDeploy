@@ -74,7 +74,7 @@
 			//$this->deploy->logger->message ('Repository files: '.implode (', ', $archive->listFiles ()), \Logger::LOG_DEBUG);
 			
 			foreach ($this->deploy->get ('files') as $file) {
-				echo ($file);
+				
 				if ($this->isIgnored ($file->get ('name'))) {
 					
 					$this->deploy->logger->message ('Skipping ignored file '.$file->get ('name'), \Logger::LOG_VERBOSE);
