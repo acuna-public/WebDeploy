@@ -16,7 +16,7 @@
 			
 		}
 		
-		protected function getPairs (): array {
+		function getPairs (): array {
 			
 			return [
 				
@@ -31,11 +31,11 @@
 			
 		}
 		
-		protected function getRequiredPairs (): array {
+		function getRequiredPairs (): array {
 			return ['destination', 'mode'];
 		}
 		
-		protected function getRequiredValues (): array {
+		function getRequiredValues (): array {
 			return ['mode' => ['update', 'replace', 'deploy', 'dry-run']];
 		}
 		

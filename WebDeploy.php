@@ -34,7 +34,7 @@
 			
 		}
 		
-		protected function getRequiredPairs (): array {
+		function getRequiredPairs (): array {
 			return ['repository', 'files'];
 		}
 		
