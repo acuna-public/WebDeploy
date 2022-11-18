@@ -73,7 +73,7 @@
 			$this->deploy->logger->message ('Modified files: '.implode (', ', $this->files['modified']), \Logger::LOG_DEBUG);
 			$this->deploy->logger->message ('Removed files: '.implode (', ', $this->files['removed']), \Logger::LOG_DEBUG);
 			//$this->deploy->logger->message ('Repository files: '.implode (', ', $archive->listFiles ()), \Logger::LOG_DEBUG);
-			
+			debug ($this->deploy->get ('files'));
 			foreach ($this->deploy->get ('files') as $file) {
 				
 				if ($this->isIgnored ($file->get ('name'))) {
