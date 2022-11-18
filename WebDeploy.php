@@ -39,7 +39,7 @@
 		}
 		
 		protected function addRule () {
-			debug ($e);
+			
 			try {
 				
 				if (isset ($this->config[$this->get ('repository')])) {
