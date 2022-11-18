@@ -60,7 +60,7 @@
 					
 				} else $this->logger->error ('Rules for repository \''.$this->get ('repository').'\' not found in deployment config', 500);
 				
-			} catch (\Exception $e) {
+			} catch (\Exception $e) {debug ($e);
 				$this->logger->error ($e->getMessage (), $e->getCode ());
 			}
 			
