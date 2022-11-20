@@ -23,7 +23,7 @@
 			try {
 				$this->deploy->storage->makeDir ();
 			} catch (\StorageException $e) {
-				$this->deploy->logger->error ('Error creating destination directory '.$e->getFile (), 500);
+				$this->deploy->logger->error ('Error creating destination directory '.$e->getFile ());
 			}
 			
 		}
