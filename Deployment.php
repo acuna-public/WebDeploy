@@ -93,7 +93,14 @@
 					if (!$dryRun) {
 						
 						try {
-							$this->writeFile ($file->get ('name'), $this->deploy->git->readFile ($this->deploy->get ('repository'), $file->get ('name')));
+							
+							$this->deploy->storage->makeDir ($this->deploy->storage->getDir ($file->get ('name')));
+							
+							$this->deploy->storage->write ($file->get ('name'), $this->deploy->git->readFile ($this->deploy->get ('repository'), $file->get ('name')));
+							$this->deploy->storage->chmod ($file->get ('name'), 0777);
+							
+							$this->deploy->logger->message ('File '.$file->get ('name').' written succesfully');
+							
 						} catch (\StorageException $e) {
 							$this->deploy->logger->error ('Error writing to file '.$e->getFile ());
 						}
@@ -108,8 +115,9 @@
 						
 						try {
 							
-							$this->removeFile ($file->get ('name'));
+							$this->deploy->storage->delete ($file->get ('name'));
 							//$this->cleanDirs (dirname ($this->deploy->storagename));
+							$this->deploy->logger->message ('File '.$file->get ('name').' deleted succesfully');
 							
 						} catch (\StorageException $e) {
 							$this->deploy->logger->error ('Error while removing file '.$e->getFile ());
@@ -121,19 +129,6 @@
 				
 			}
 			
-		}
-		
-		protected function writeFile ($file, $data) {
-			
-			$this->deploy->storage->makeDir ($this->deploy->storage->getDir ($file));
-			
-			$this->deploy->storage->write ($file, $data);
-			$this->deploy->storage->chmod ($file, 0777);
-			
-		}
-		
-		protected function removeFile ($file) {
-			return $this->deploy->storage->delete ($file);
 		}
 		
 		protected function cleanDirs ($path) {
