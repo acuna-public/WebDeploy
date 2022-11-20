@@ -34,8 +34,8 @@
 			if (isset ($_SERVER['HTTP_X_GITHUB_EVENT']) or $this->debug) {
 				
 				if (!$this->debug and $_SERVER['HTTP_X_GITHUB_EVENT'] == 'ping')
-				//	$this->logger->success ('Ping received');
-				//else
+					$this->logger->message ('Ping received');
+				else
 					return true;
 				
 			}

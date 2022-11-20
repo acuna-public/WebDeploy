@@ -4,7 +4,7 @@
 	 * https://github.com/acuna-public/WebDeploy
 	 * @author Acuna
 	 * @license GPLv3
-	 * @version 1.1
+	 * @version 1.2
 	 */
 	
 	require_once 'AssocArray.php';
@@ -14,7 +14,7 @@
 	
 	abstract class WebDeploy extends AssocArray {
 		
-		const VERSION = '1.1';
+		const VERSION = '1.2';
 		
 		protected $matched = [], $filters = [];
 		public $debug = 0, $git;
@@ -58,9 +58,9 @@
 						
 					}
 					
-				} else $this->logger->error ('Rules for repository \''.$this->get ('repository').'\' not found in deployment config', 500);
+				} else $this->logger->error ('Rules for repository \''.$this->get ('repository').'\' not found in deployment config', 404);
 				
-			} catch (\Exception $e) {debug ($e);
+			} catch (\Exception $e) {
 				$this->logger->error ($e->getMessage (), $e->getCode ());
 			}
 			
@@ -84,7 +84,7 @@
 						$this->onParse ();
 						$this->addRule ();
 						
-					} else $this->logger->error ('Config is empty', 500);
+					} else $this->logger->error ('Config is empty', 204);
 					
 				}
 				

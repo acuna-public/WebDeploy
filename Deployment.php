@@ -73,7 +73,7 @@
 			$this->deploy->logger->message ('Modified files: '.implode (', ', $this->files['modified']), \Logger::LOG_DEBUG);
 			$this->deploy->logger->message ('Removed files: '.implode (', ', $this->files['removed']), \Logger::LOG_DEBUG);
 			//$this->deploy->logger->message ('Repository files: '.implode (', ', $archive->listFiles ()), \Logger::LOG_DEBUG);
-			debug ($this->deploy->get ('files'));
+			print_r ($this->deploy->get ('files'));
 			foreach ($this->deploy->get ('files') as $file) {
 				
 				if ($this->isIgnored ($file->get ('name'))) {
@@ -84,8 +84,8 @@
 				}
 				
 				if (
-					($file->get ('status') == 'modified' and $this->getMode () != 'replace') // Изменен локально
-					or !$this->deploy->storage->exists ($file->get ('name')) // Не существует на сервере
+					$file->get ('status') == 'modified' or $this->getMode () == 'replace' // Изменен локально
+					or $file->get ('status') == 'added' // Создан локально
 				) {
 					
 					$this->deploy->logger->message ('Writing file '.$file->get ('name'));
