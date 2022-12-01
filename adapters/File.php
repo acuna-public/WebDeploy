@@ -41,9 +41,7 @@
 		
 		function delete ($file): bool {
 			
-			$result = $this->getFile ($file)->delete ();
-			
-			if ($result)
+			if ($this->getFile ($file)->delete ())
 				return true;
 			else
 				throw new \StorageException ($this, 'Can\'t delete file', $file);
