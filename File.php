@@ -38,7 +38,7 @@
 		}
 		
 		function chmod ($chmod): bool {
-			return chmod ($this->file, $chmod);
+			return @chmod ($this->file, $chmod);
 		}
 		
 		function char ($offset): string {
@@ -51,19 +51,7 @@
 		}
 		
 		function makeDir ($chmod = 0777) {
-			
-			$dir = '';
-			
-			foreach (explode ('/', str_replace ('\\', '/', $this->file)) as $i => $part) {
-				
-				if ($part == '') continue;
-				if ($i > 0) $dir .= '/';
-				
-				$dir .= $part;
-				if (!@is_dir ($dir)) @mkdir ($dir, $chmod);
-				
-			}
-			
+			return is_dir ($this->getDir ()) || @mkdir ($this->getDir (), $chmod, true);
 		}
 		
 		function isDir (): bool {

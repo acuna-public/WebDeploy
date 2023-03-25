@@ -13,30 +13,13 @@
 			
 		}
 		
-		protected function setup () {
-			
-			$this->deploy->logger->setLogLevel ($this->rule->get ('log-level'));
-			
-			if ($commit = substr ($this->deploy->get ('commit-id'), 0, 6))
-				$this->deploy->logger->message ('Deploying '.$commit.' ('.$this->deploy->get ('branch').') from '.$this->deploy->get ('repository'));
-			
-			try {
-				$this->deploy->storage->makeDir ();
-			} catch (\StorageException $e) {
-				$this->deploy->logger->error ('Error creating destination directory '.$e->getFile ());
-			}
-			
-		}
-		
 		function process () {
 			
 			$this->deploy->logger->message ('Starting to deploy \''.$this->deploy->get ('repository').'\' repository...');
 			
-			$this->setup ();
 			$this->deployFiles ();
 			
-			if (!$this->deploy->logger->message['error'])
-				$this->deploy->logger->message ('Repository \''.$this->deploy->get ('repository').'\' deployed in \''.$this->rule->get ('mode').'\' mode');
+			$this->deploy->logger->message ('Repository \''.$this->deploy->get ('repository').'\' deployed in \''.$this->rule->get ('mode').'\' mode');
 			
 		}
 		
@@ -68,6 +51,11 @@
 		
 		protected function deployFiles () {
 			
+			$this->deploy->logger->setLogLevel ($this->rule->get ('log-level'));
+			
+			if ($commit = substr ($this->deploy->get ('commit-id'), 0, 6))
+				$this->deploy->logger->message ('Deploying '.$commit.' ('.$this->deploy->get ('branch').') from '.$this->deploy->get ('repository'));
+			
 			$dryRun = ($this->rule->get ('mode') == 'dry-run');
 			
 			$this->deploy->logger->message ('Modified files: '.implode (', ', $this->files['modified']), \Logger::LOG_DEBUG);
@@ -76,55 +64,50 @@
 			
 			foreach ($this->deploy->get ('files') as $file) {
 				
-				if ($this->isIgnored ($file->get ('name'))) {
+				try {
 					
-					$this->deploy->logger->message ('Skipping ignored file '.$file->get ('name'), \Logger::LOG_VERBOSE);
-					continue;
+					$this->deploy->storage->setFile ($this->rule->get ('destination').'/'.$file->get ('name'));
 					
-				}
-				
-				if (
-					$file->get ('status') == 'modified' or $this->getMode () == 'replace' // Изменен локально
-					or $file->get ('status') == 'added' // Создан локально
-				) {
-					
-					$this->deploy->logger->message ('Writing file '.$file->get ('name'));
-					
-					if (!$dryRun) {
+					if ($this->isIgnored ($file->get ('name'))) {
 						
-						try {
+						$this->deploy->logger->message ('Skipping ignored file '.$file->get ('name'), \Logger::LOG_VERBOSE);
+						continue;
+						
+					}
+					
+					if (
+						$file->get ('status') == 'modified' or $this->getMode () == 'replace' // Изменен локально
+						or $file->get ('status') == 'added' // Создан локально
+					) {
+						
+						$this->deploy->logger->message ('Writing file '.$file->get ('name'));
+						
+						if (!$dryRun) {
 							
-							$this->deploy->storage->makeDir ($this->deploy->storage->getDir ($file->get ('name')));
+							$this->deploy->storage->makeDir ();
 							
-							$this->deploy->storage->write ($file->get ('name'), $this->deploy->git->readFile ($this->deploy->get ('repository'), $file->get ('name')));
-							$this->deploy->storage->chmod ($file->get ('name'), 0777);
+							$this->deploy->storage->write ($this->deploy->git->readFile ($this->deploy->get ('repository'), $file->get ('name')));
 							
 							$this->deploy->logger->message ('File '.$file->get ('name').' written succesfully');
 							
-						} catch (\StorageException $e) {
-							$this->deploy->logger->error ('Error writing to file '.$e->getFile ());
 						}
 						
-					}
-					
-				} elseif ($file->get ('status') == 'removed' and $this->deploy->storage->exists ($file->get ('name'))) {
-					
-					$this->deploy->logger->message ('Removing file '.$file->get ('name'));
-					
-					if (!$dryRun) {
+					} elseif ($file->get ('status') == 'removed' and $this->deploy->storage->exists ()) {
 						
-						try {
+						$this->deploy->logger->message ('Removing file '.$file->get ('name'));
+						
+						if (!$dryRun) {
 							
-							$this->deploy->storage->delete ($file->get ('name'));
+							$this->deploy->storage->delete ();
 							//$this->cleanDirs (dirname ($this->deploy->storagename));
 							$this->deploy->logger->message ('File '.$file->get ('name').' deleted succesfully');
 							
-						} catch (\StorageException $e) {
-							$this->deploy->logger->error ('Error while removing file '.$e->getFile ());
 						}
 						
 					}
 					
+				} catch (\StorageException $e) {
+					$this->deploy->logger->error ($e->toString ());
 				}
 				
 			}

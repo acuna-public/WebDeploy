@@ -4,27 +4,20 @@
 	
 	abstract class Storage {
 		
-		public $config = [];
+		abstract function setFile ($file);
 		
-		function __construct (array $config = []) {
-			$this->config = $config;
-		}
+		abstract function read (): string;
+		abstract function write ($content, $append = false);
+		abstract function makeDir ($chmod = 0777);
+		abstract function isDir (): bool;
+		abstract function isFile (): bool;
+		abstract function delete (): bool;
+		abstract function exists (): bool;
+		abstract function size ();
+		abstract function modified ();
+		abstract function getDir (): string;
 		
-		abstract function read ($file): string;
-		abstract function write ($file, $content, $append = false);
-		abstract function makeDir ($dir = '', $chmod = 0777);
-		abstract function isDir ($dir = ''): bool;
-		abstract function isFile ($file): bool;
-		abstract function delete ($file): bool;
-		abstract function exists ($file): bool;
-		abstract function size ($file);
-		abstract function modified ($file);
-		
-		function getDir ($dir): string {
-			return $dir;
-		}
-		
-		function chmod ($file, $chmod): bool {
+		function chmod ($chmod): bool {
 			return false;
 		}
 		

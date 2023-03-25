@@ -1,16 +1,19 @@
 <?php
 	
-	class StorageException extends Exception {
+	class StorageException extends \Exception {
 		
-		protected $storage;
+		public $storage;
 		
-		function __construct (Storage $storage, $mess, $file = '') {
+		function __construct (\Storage $storage, $mess) {
 			
 			parent::__construct ($mess);
 			
 			$this->storage = $storage;
-			$this->file = $file;
 			
+		}
+		
+		function toString () {
+			return $this->getMessage ().' \''.$this->storage->file.'\'';
 		}
 		
 	}

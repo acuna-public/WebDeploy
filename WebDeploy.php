@@ -12,9 +12,9 @@
 	require_once 'ConfigRule.php';
 	require_once 'Deployment.php';
 	
-	abstract class WebDeploy extends AssocArray {
+	abstract class WebDeploy extends \AssocArray {
 		
-		const VERSION = '1.2';
+		const VERSION = '1.3';
 		
 		protected $matched = [], $filters = [];
 		public $debug = 0, $git;
@@ -44,13 +44,11 @@
 				
 				if (isset ($this->config[$this->get ('repository')])) {
 					
-					$rule = new WebDeploy\ConfigRule ($this);
+					$rule = new \WebDeploy\ConfigRule ($this);
 					
 					if ($rule->compare ()) {
 						
-						$this->storage->config['path'] = $rule->get ('destination');
-						
-						$deploy = new WebDeploy\Deployment ($this, $rule);
+						$deploy = new \WebDeploy\Deployment ($this, $rule);
 						
 						$deploy->process ();
 						
