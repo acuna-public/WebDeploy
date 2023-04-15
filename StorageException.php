@@ -2,7 +2,7 @@
 	
 	class StorageException extends \Exception {
 		
-		public $storage;
+		public \Storage $storage;
 		
 		function __construct (\Storage $storage, $mess) {
 			

@@ -4,7 +4,7 @@
 	 * https://github.com/acuna-public/WebDeploy
 	 * @author Acuna
 	 * @license GPLv3
-	 * @version 1.2
+	 * @version 1.3
 	 */
 	
 	require_once 'AssocArray.php';
@@ -19,9 +19,12 @@
 		protected $matched = [], $filters = [];
 		public $debug = 0, $git;
 		
-		public $token, $config, $storage, $logger;
+		public $token, $config;
 		
-		function __construct (string $token, array $config, Storage $storage, Logger $logger) {
+		public \Storage $storage;
+		public \Logger $logger;
+		
+		function __construct (string $token, array $config, \Storage $storage, \Logger $logger) {
 			
 			parent::__construct ();
 			
