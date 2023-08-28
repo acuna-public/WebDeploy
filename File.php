@@ -2,10 +2,10 @@
 	
 	class File {
 		
-		private $fp;
+		protected $fp;
 		public $file, $size;
 		
-		private const READ = 'rb', WRITE = 'ab', REWRITE = 'w+b';
+		protected const READ = 'rb', WRITE = 'ab', REWRITE = 'w+b';
 		
 		function __construct ($file) {
 			
@@ -16,7 +16,7 @@
 			
 		}
 		
-		private function open ($mode) {
+		protected function open ($mode) {
 			
 			if (!$this->fp)
 				$this->fp = @fopen ($this->file, $mode);
@@ -67,7 +67,12 @@
 		}
 		
 		function delete (): bool {
-			return unlink ($this->file);
+			
+			if ($this->exists ())
+				return unlink ($this->file);
+			else
+				return true;
+			
 		}
 		
 		function exists (): bool {
