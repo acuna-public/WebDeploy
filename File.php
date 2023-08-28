@@ -66,13 +66,8 @@
 			return is_file ($this->file);
 		}
 		
-		function delete (): bool {
-			
-			if ($this->exists ())
-				return unlink ($this->file);
-			else
-				return true;
-			
+		function delete () {
+			unlink ($this->file);
 		}
 		
 		function exists (): bool {
