@@ -96,7 +96,7 @@
 						
 						$this->deploy->logger->message ('Removing file '.$file->get ('name'));
 						
-						if (!$dryRun) {
+						if (!$dryRun and $this->deploy->storage->exists ()) {
 							
 							$this->deploy->storage->delete ();
 							//$this->cleanDirs (dirname ($this->deploy->storagename));
