@@ -46,10 +46,11 @@
 		
 		function delete (): bool {
 			
-			if ($this->file->delete ())
-				return true;
-			else
-				throw new \StorageException ($this, 'Can\'t delete file');
+			if ($this->file->exists ())
+				if (!$this->file->delete ())
+					throw new \StorageException ($this, 'Can\'t delete file');
+			
+			return true;
 			
 		}
 		
