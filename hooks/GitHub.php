@@ -21,11 +21,15 @@
 			
 			$config = $this->getConfig ();
 			
-			$this->git = new \Git\GitHub (['login' => $config['login'], 'token' => $this->token]);
-			
-			$this->commit = $this->git->getCommit ($data);
-			
-			$this->set ('files', $this->commit->get ('files'));
+			if ($config) {
+				
+				$this->git = new \Git\GitHub (['login' => $config['login'], 'token' => $this->token]);
+				
+				$this->commit = $this->git->getCommit ($data);
+				
+				$this->set ('files', $this->commit->get ('files'));
+				
+			}
 			
 		}
 		
