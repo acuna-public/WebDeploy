@@ -29,7 +29,7 @@
 			parent::__construct ();
 			
 			$this->token = $token;
-			$this->configs = $config;
+			$this->configs = $configs;
 			$this->storage = $storage;
 			$this->logger = $logger;
 			
