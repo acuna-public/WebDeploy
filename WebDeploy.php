@@ -70,7 +70,7 @@
 			
 			try {
 				
-				if ($this->get ('repository')) {
+				if ($this->isDeploy ()) {
 					
 					if (isset ($this->configs[$this->get ('repository')])) {
 						
@@ -78,16 +78,10 @@
 						
 						if ($this->config) {
 							
-							if ($this->isDeploy ()) {
-								
-								$this->onParse ();
-								$this->addRule ();
-								
-							}
+							$this->onParse ();
+							$this->addRule ();
 							
 						} else $this->logger->error ('Config is empty', 204);
-						
-						//$this->logger->statusCode = ($this->logger->message['error'] ? 403 : 200);
 						
 					} else $this->logger->error ('Repository \''.$this->get ('repository').'\' not found in deployment config', 404);
 					
@@ -96,8 +90,6 @@
 			} catch (\GitException $e) {
 				$this->logger->error ($e->getMessage (), $e->getCode ());
 			}
-			
-			$this->logger->sendStatus ();
 			
 		}
 		
