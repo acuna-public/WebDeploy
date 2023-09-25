@@ -74,6 +74,8 @@
 			else
 				$this->logger->error ('Repository \''.$this->get ('repository').'\' not found in deployment config', 404);
 			
+			return [];
+			
 		}
 		
 		abstract protected function onParse ();
