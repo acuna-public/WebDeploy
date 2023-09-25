@@ -68,7 +68,12 @@
 		}
 		
 		final function getConfig (): array {
-			return $this->config[$this->get ('repository')];
+			
+			if (isset ($this->config[$this->get ('repository')]))
+				return $this->config[$this->get ('repository')];
+			else
+				$this->logger->error ('Repository \''.$this->get ('repository').'\' not found in deployment config', 404);
+			
 		}
 		
 		abstract protected function onParse ();
