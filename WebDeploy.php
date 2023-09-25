@@ -19,17 +19,17 @@
 		protected $matched = [], $filters = [];
 		public $debug = 0, $git;
 		
-		public $token, $config;
+		public $token, $configs, $config = [];
 		
 		public \Storage $storage;
 		public \Logger $logger;
 		
-		function __construct (string $token, array $config, \Storage $storage, \Logger $logger) {
+		function __construct (string $token, array $configs, \Storage $storage, \Logger $logger) {
 			
 			parent::__construct ();
 			
 			$this->token = $token;
-			$this->config = $config;
+			$this->configs = $config;
 			$this->storage = $storage;
 			$this->logger = $logger;
 			
@@ -45,36 +45,21 @@
 			
 			try {
 				
-				if ($this->getConfig ()) {
+				$rule = new \WebDeploy\ConfigRule ($this);
+				
+				if ($rule->compare ()) {
 					
-					$rule = new \WebDeploy\ConfigRule ($this);
+					$deploy = new \WebDeploy\Deployment ($this, $rule);
 					
-					if ($rule->compare ()) {
-						
-						$deploy = new \WebDeploy\Deployment ($this, $rule);
-						
-						$deploy->process ();
-						
-						$this->logger->setLogLevel ();
-						
-					}
+					$deploy->process ();
+					
+					$this->logger->setLogLevel ();
 					
 				}
 				
 			} catch (\Exception $e) {
 				$this->logger->error ($e->getMessage (), $e->getCode ());
 			}
-			
-		}
-		
-		final function getConfig (): array {
-			
-			if (isset ($this->config[$this->get ('repository')]))
-				return $this->config[$this->get ('repository')];
-			else
-				$this->logger->error ('Repository \''.$this->get ('repository').'\' not found in deployment config', 404);
-			
-			return [];
 			
 		}
 		
@@ -85,20 +70,26 @@
 			
 			try {
 				
-				if ($this->isDeploy ()) {
+				if (isset ($this->configs[$this->get ('repository')])) {
+					
+					$this->config = $this->configs[$this->get ('repository')];
 					
 					if ($this->config) {
 						
-						$this->onParse ();
-						$this->addRule ();
+						if ($this->isDeploy ()) {
+							
+							$this->onParse ();
+							$this->addRule ();
+							
+						}
 						
 					} else $this->logger->error ('Config is empty', 204);
 					
-				}
-				
-				$this->logger->statusCode = ($this->logger->message['error'] ? 403 : 200);
-				
-				$this->logger->sendStatus ();
+					$this->logger->statusCode = ($this->logger->message['error'] ? 403 : 200);
+					
+					$this->logger->sendStatus ();
+					
+				} else $this->logger->error ('Repository \''.$this->get ('repository').'\' not found in deployment config', 404);
 				
 			} catch (\GitException $e) {
 				$this->logger->error ($e->getMessage (), $e->getCode ());

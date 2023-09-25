@@ -12,7 +12,7 @@
 			
 			$this->hook = $hook;
 			
-			parent::__construct ($this->hook->getConfig ());
+			parent::__construct ($this->hook->config);
 			
 		}
 		
