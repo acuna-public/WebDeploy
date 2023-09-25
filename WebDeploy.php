@@ -41,7 +41,7 @@
 			return ['repository', 'files'];
 		}
 		
-		protected function addRule () {
+		protected function addRules () {
 			
 			try {
 				
@@ -70,18 +70,16 @@
 			
 			try {
 				
+				$this->addRules ();
+				
 				if ($this->isDeploy ()) {
 					
 					if (isset ($this->configs[$this->get ('repository')])) {
 						
-						$this->config = $this->configs[$this->get ('repository')];
-						
-						if ($this->config) {
-							
+						if ($this->config = $this->configs[$this->get ('repository')])
 							$this->onParse ();
-							$this->addRule ();
-							
-						} else $this->logger->error ('Config is empty', 204);
+						else
+							$this->logger->error ('Config is empty', 204);
 						
 					} else $this->logger->error ('Repository \''.$this->get ('repository').'\' not found in deployment config', 404);
 					
