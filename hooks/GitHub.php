@@ -4,32 +4,32 @@
 	
 	class GitHub extends \WebDeploy {
 		
-		protected $commit;
+		protected $data = [];
 		
 		protected function onParse () {
 			
-			if ($this->debug)
-				$payload = file_get_contents (__DIR__.'/github.json');
-			elseif ($_POST)
-				$payload = $_POST['payload'];
-			else
-				$payload = file_get_contents ('php://input');
-			
-			$data = json_decode ($payload, true);
-			
-			$this->set ('repository', $data['repository']['name']);
-			
 			$this->git = new \Git\GitHub (['login' => $this->config['login'], 'token' => $this->token]);
 			
-			$this->commit = $this->git->getCommit ($data);
+			$commit = $this->git->getCommit ($this->data);
 			
-			$this->set ('files', $this->commit->get ('files'));
+			$this->set ('files', $commit->get ('files'));
 			
 		}
 		
 		protected function isDeploy (): bool {
 			
 			if (isset ($_SERVER['HTTP_X_GITHUB_EVENT']) or $this->debug) {
+				
+				if ($this->debug)
+					$payload = file_get_contents (__DIR__.'/github.json');
+				elseif ($_POST)
+					$payload = $_POST['payload'];
+				else
+					$payload = file_get_contents ('php://input');
+				
+				$this->data = json_decode ($payload, true);
+				
+				$this->setRepositoryName ($this->data['repository']['name']);
 				
 				if (!$this->debug and $_SERVER['HTTP_X_GITHUB_EVENT'] == 'ping')
 					$this->logger->message ('Ping received');

@@ -63,6 +63,10 @@
 			
 		}
 		
+		protected function setRepositoryName ($name) {
+			$this->set ('repository', $name);
+		}
+		
 		abstract protected function onParse ();
 		abstract protected function isDeploy (): bool;
 		
@@ -70,16 +74,16 @@
 			
 			try {
 				
-				$this->addRules ();
-				
 				if ($this->isDeploy ()) {
 					
 					if (isset ($this->configs[$this->get ('repository')])) {
 						
-						if ($this->config = $this->configs[$this->get ('repository')])
+						if ($this->config = $this->configs[$this->get ('repository')]) {
+							
 							$this->onParse ();
-						else
-							$this->logger->error ('Config is empty', 204);
+							$this->addRules ();
+							
+						} else $this->logger->error ('Config is empty', 204);
 						
 					} else $this->logger->error ('Repository \''.$this->get ('repository').'\' not found in deployment config', 404);
 					
