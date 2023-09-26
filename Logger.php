@@ -84,16 +84,8 @@
 			$this->message['error'][] = ['text' => $message, 'code' => $code];
 			
 			$this->write ($message);
-			$this->sendStatus ($code);
 			
-		}
-		
-		function sendStatus (int $statusCode) {
-			
-			http_response_code ($statusCode);
-			
-			//if ($this->level > self::LOG_NONE)
-				echo json_encode ($this->message, true);
+			http_response_code ($code);
 			
 		}
 		

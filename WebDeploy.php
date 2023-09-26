@@ -93,6 +93,8 @@
 				$this->logger->error ($e->getMessage (), $e->getCode ());
 			}
 			
+			echo json_encode ($this->message, true);
+			
 		}
 		
 	}
