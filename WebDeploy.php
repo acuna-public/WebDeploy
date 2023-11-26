@@ -89,7 +89,7 @@
 					
 				}
 				
-			} catch (\GitException $e) {
+			} catch (\GitException $e) {debug ($e->getTrace ());
 				$this->logger->error ($e->getMessage (), $e->getCode ());
 			}
 			
