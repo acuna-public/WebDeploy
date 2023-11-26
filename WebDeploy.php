@@ -4,7 +4,7 @@
 	 * https://github.com/acuna-public/WebDeploy
 	 * @author Acuna
 	 * @license GPLv3
-	 * @version 1.3
+	 * @version 1.4
 	 */
 	
 	require_once 'AssocArray.php';
@@ -14,7 +14,7 @@
 	
 	abstract class WebDeploy extends \AssocArray {
 		
-		const VERSION = '1.3';
+		const VERSION = '1.4';
 		
 		protected $matched = [], $filters = [];
 		public $debug = 0, $git;
