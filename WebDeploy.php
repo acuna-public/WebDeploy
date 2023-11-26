@@ -43,22 +43,16 @@
 		
 		protected function addRules () {
 			
-			try {
+			$rule = new \WebDeploy\ConfigRule ($this);
+			
+			if ($rule->compare ()) {
 				
-				$rule = new \WebDeploy\ConfigRule ($this);
+				$deploy = new \WebDeploy\Deployment ($this, $rule);
 				
-				if ($rule->compare ()) {
-					
-					$deploy = new \WebDeploy\Deployment ($this, $rule);
-					
-					$deploy->process ();
-					
-					$this->logger->setLogLevel ();
-					
-				}
+				$deploy->process ();
 				
-			} catch (\Exception $e) {
-				$this->logger->error ($e->getMessage (), $e->getCode ());
+				$this->logger->setLogLevel ();
+				
 			}
 			
 		}
@@ -90,7 +84,7 @@
 				}
 				
 			} catch (\GitException $e) {debug ($e->getTrace ());
-				$this->logger->error ($e->getMessage (), $e->getCode ());
+				//$this->logger->error ($e->getMessage (), $e->getCode ());
 			}
 			
 			echo json_encode ($this->logger->message, true);

@@ -107,7 +107,7 @@
 					}
 					
 				} catch (\StorageException | \GitException $e) {
-					$this->deploy->logger->error ($e->toString ());
+					$this->deploy->logger->error ($e->getMessage ());
 				}
 				
 			}
