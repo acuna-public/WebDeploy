@@ -66,25 +66,19 @@
 		
 		final function deploy () {
 			
-			try {
+			if ($this->isDeploy ()) {
 				
-				if ($this->isDeploy ()) {
+				if (isset ($this->configs[$this->get ('repository')])) {
 					
-					if (isset ($this->configs[$this->get ('repository')])) {
+					if ($this->config = $this->configs[$this->get ('repository')]) {
 						
-						if ($this->config = $this->configs[$this->get ('repository')]) {
-							
-							$this->onParse ();
-							$this->addRules ();
-							
-						} else $this->logger->error ('Config is empty', 204);
+						$this->onParse ();
+						$this->addRules ();
 						
-					} else $this->logger->error ('Repository \''.$this->get ('repository').'\' not found in deployment config', 404);
+					} else $this->logger->error ('Config is empty', 204);
 					
-				}
+				} else $this->logger->error ('Repository \''.$this->get ('repository').'\' not found in deployment config', 404);
 				
-			} catch (\GitException $e) {debug ($e->getTrace ());
-				//$this->logger->error ($e->getMessage (), $e->getCode ());
 			}
 			
 			echo json_encode ($this->logger->message, true);
