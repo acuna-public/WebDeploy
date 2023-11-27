@@ -12,8 +12,6 @@
 	require 'ConfigRule.php';
 	require 'Deployment.php';
 	
-	use WebDeploy;
-	
 	abstract class WebDeploy extends \AssocArray {
 		
 		const VERSION = '1.4';
@@ -45,11 +43,11 @@
 		
 		protected function addRules () {
 			
-			$rule = new ConfigRule ($this);
+			$rule = new \WebDeploy\ConfigRule ($this);
 			
 			if ($rule->compare ()) {
 				
-				$deploy = new Deployment ($this, $rule);
+				$deploy = new \WebDeploy\Deployment ($this, $rule);
 				
 				$deploy->process ();
 				
