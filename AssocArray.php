@@ -4,7 +4,7 @@
 		
 		public $pairs = [];
 		
-		protected $required, $values;
+		public $required, $values;
 		
 		function __construct (array $data = []) {
 			
