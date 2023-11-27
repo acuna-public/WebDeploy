@@ -8,8 +8,8 @@
 	 */
 	
 	require 'WebDeploy.php';
-	require 'ConfigRule.php';
-	require 'Deployment.php';
+	require_once 'ConfigRule.php';
+	require_once 'Deployment.php';
 	
 	abstract class WebDeploy extends \AssocArray {
 		
