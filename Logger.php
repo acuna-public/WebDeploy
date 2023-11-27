@@ -73,7 +73,7 @@
 			if ($this->level > self::LOG_NONE and $level <= $this->level) {
 				
 				$this->write ($message, $level);
-				$this->message['mess'][] = $message;
+				$this->message['messages'][] = $message;
 				
 			}
 			
@@ -81,7 +81,7 @@
 		
 		function error ($message, $code = 403) {
 			
-			$this->message['error'][] = ['text' => $message, 'code' => $code];
+			$this->message['errors'][] = ['text' => $message, 'code' => $code];
 			
 			$this->write ($message);
 			
