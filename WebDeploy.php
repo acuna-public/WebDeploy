@@ -7,7 +7,6 @@
 	 * @version 1.4
 	 */
 	
-	require 'AssocArray.php';
 	require 'WebDeploy.php';
 	require 'ConfigRule.php';
 	require 'Deployment.php';
