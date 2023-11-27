@@ -81,7 +81,7 @@
 				
 			}
 			
-			echo json_encode ($this->logger->message, true);
+			echo json_encode ($this->logger->message, JSON_PRETTY_PRINT);
 			
 		}
 		
