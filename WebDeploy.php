@@ -75,7 +75,7 @@
 						$this->onParse ();
 						$this->addRules ();
 						
-					} else $this->logger->error ('Config is empty', 204);
+					} else $this->logger->error ('Config is empty', 406);
 					
 				} else $this->logger->error ('Repository \''.$this->get ('repository').'\' not found in deployment config', 404);
 				

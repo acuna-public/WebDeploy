@@ -109,7 +109,7 @@
 				} catch (\StorageException $e) {
 					$this->deploy->logger->error ($e->getMessage ());
 				} catch (\GitException $e) {
-					$this->deploy->logger->error ($e->fileName.': '.$e->getMessage ());
+					$this->deploy->logger->error ($e->fileName.': '.$e->getMessage (), $e->getCode ());
 				}
 				
 			}
