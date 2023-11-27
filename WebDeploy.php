@@ -7,10 +7,12 @@
 	 * @version 1.4
 	 */
 	
-	require_once 'AssocArray.php';
-	require_once 'WebDeploy.php';
-	require_once 'ConfigRule.php';
-	require_once 'Deployment.php';
+	require 'AssocArray.php';
+	require 'WebDeploy.php';
+	require 'ConfigRule.php';
+	require 'Deployment.php';
+	
+	use WebDeploy;
 	
 	abstract class WebDeploy extends \AssocArray {
 		
@@ -43,11 +45,11 @@
 		
 		protected function addRules () {
 			
-			$rule = new \WebDeploy\ConfigRule ($this);
+			$rule = new ConfigRule ($this);
 			
 			if ($rule->compare ()) {
 				
-				$deploy = new \WebDeploy\Deployment ($this, $rule);
+				$deploy = new Deployment ($this, $rule);
 				
 				$deploy->process ();
 				
