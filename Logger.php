@@ -9,7 +9,7 @@
 			LOG_DEBUG = 3;
 		
 		public
-			$message = ['name' => '', 'version' => '', 'mess' => [], 'error' => []],
+			$message = ['name' => '', 'version' => ''],
 			$statusCode = 0;
 		
 		protected
