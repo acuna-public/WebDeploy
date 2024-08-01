@@ -23,8 +23,9 @@
 			
 		}
 		
-		// Determine the actual deployment mode to use
-		
+		/**
+			Determine the actual deployment mode to use
+		*/
 		protected function getMode () {
 			
 			if ($this->deploy->get ('forced')) {
@@ -47,8 +48,9 @@
 			
 		}
 		
-		// Extract files according to WebDeploy commit data
-		
+		/**
+			Extract files according to WebDeploy commit data
+		*/
 		protected function deployFiles () {
 			
 			$this->deploy->logger->setLogLevel ($this->rule->get ('log-level'));
@@ -127,7 +129,9 @@
 			
 		}
 		
-		// Check to see if a file should be ignored
+		/**
+			Check to see if a file should be ignored
+		*/
 		
 		protected function isIgnored ($filename) {
 			
@@ -152,9 +156,10 @@
 			return false;
 			
 		}
-
-		// Count the number of files in a directory, including ignored if required
 		
+		/**
+			Count the number of files in a directory, including ignored if required
+		*/
 		protected function countFiles ($path, $all = true) {
 			
 			$count = 0;

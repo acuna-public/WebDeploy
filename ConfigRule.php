@@ -1,6 +1,8 @@
 <?php
 	
-	// Class to hold, validate and match a single config rule
+	/**
+		Class to hold, validate and match a single config rule
+	*/
 	
 	namespace WebDeploy;
 	
@@ -39,8 +41,9 @@
 			return ['mode' => ['update', 'replace', 'deploy', 'dry-run']];
 		}
 		
-		// Attempt to match rule against WebDeploy
-		
+		/**
+			Attempt to match rule against WebDeploy
+		*/
 		function compare (): bool {
 			
 			$this->validate ();
