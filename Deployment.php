@@ -90,7 +90,7 @@
 							
 							$this->deploy->storage->write ($this->deploy->git->readFile ($this->deploy->get ('repository'), $file->get ('name')));
 							
-							$this->deploy->logger->message ($this->deploy->git->readFile ($this->deploy->get ('repository'), $file->get ('name')));
+							
 							$this->deploy->logger->message ('File '.$file->get ('name').' written succesfully');
 							
 						}
