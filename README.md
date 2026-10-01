@@ -29,6 +29,6 @@
 6. Select "application/json" content type.
 7. Press "Add webhook".
 
-Now you can send your queries via your GitHub clients (GitHub Desktop, own servers etc.).
+Now you can send your queries via your GitHub clients (GitHub Desktop, own server etc.).
 
 
