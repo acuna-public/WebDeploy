@@ -26,8 +26,8 @@
 3. Open your GitHub repo settings.
 4. Go to "Webhooks" section and press "New webhook".
 5. Input your payload to the file (e.g. https://api.site.com/deploy.php).
-6. Select "application/json" Content type.
-7. Press "add webhook".
+6. Select "application/json" content type.
+7. Press "Add webhook".
 
 Now you can send your queries via your GitHub clients (GitHub Desktop, own servers etc.).
 
