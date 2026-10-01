@@ -1,5 +1,5 @@
 # WebDeploy
- A GitHub hook for automatic deploy to the remote server
+ A GitHub hook for automatic deploy to the remote server.
 
 ## Usage:
 
